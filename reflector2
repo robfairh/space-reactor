@@ -1,0 +1,128 @@
+/* Numbering:
+* Universes: 1 to 10
+* Surfaces: 100 to 200
+* Cells: 500 to 600
+*/
+
+/******************************
+*      Particle Definition    *
+*******************************/
+particle 1
+
+uco    0.02125
+buffer 0.03125
+pyc    0.03475
+sic    0.03825
+pyc    0.04225
+zrh
+
+/*************************
+*        Reactor         *
+**************************/
+
+surf 100 inf
+cell 500 2 zrh -100
+
+pbed 3 2 "particles3C"
+
+surf 110 cyl 0.0 0.0 6.07 0.0 1.3125
+cell 510 4 fill 3  -110
+cell 511 4 fill 2   110
+
+lat 5 9 0.0 0.0 64
+ 0.0 4 1.312 4 2.625 4 3.938 4 5.25 4 6.562 4 7.875 4 9.188 4 10.5 4 11.812 4
+ 13.125 4 14.438 4 15.75 4 17.062 4 18.375 4 19.688 4 21.0 4 22.312 4 23.625 4 24.938 4
+ 26.25 4 27.562 4 28.875 4 30.188 4 31.5 4 32.812 4 34.125 4 35.438 4 36.75 4 38.062 4
+ 39.375 4 40.688 4 42.0 4 43.312 4 44.625 4 45.938 4 47.25 4 48.562 4 49.875 4 51.188 4
+ 52.5 4 53.812 4 55.125 4 56.438 4 57.75 4 59.062 4 60.375 4 61.688 4 63.0 4 64.312 4
+ 65.625 4 66.938 4 68.25 4 69.562 4 70.875 4 72.188 4 73.5 4 74.812 4 76.125 4 77.438 4
+ 78.75 4 80.062 4 81.375 4 82.688 4
+
+lat 6 3 0.0 0.0 10 10 10.5
+5 5 5 5 5 5 5 5 5 5
+ 5 5 5 5 5 5 5 5 5 5
+  5 5 5 5 5 5 5 5 5 5
+   5 5 5 5 5 5 5 5 5 5
+    5 5 5 5 5 5 5 5 5 5
+     5 5 5 5 5 5 5 5 5 5
+      5 5 5 5 5 5 5 5 5 5
+       5 5 5 5 5 5 5 5 5 5
+        5 5 5 5 5 5 5 5 5 5
+         5 5 5 5 5 5 5 5 5 5
+
+surf 111 cyl 0.0 0.0 42   0  84
+surf 112 cyl 0.0 0.0 55   0  84
+surf 113 cyl 0.0 0.0 55  84  94
+surf 114 cyl 0.0 0.0 55 -10   0
+surf 115 cyl 0.0 0.0 55 -10  94
+
+cell 512 0 fill 6  -111
+cell 513 0 be       111 -112
+cell 514 0 be      -113
+cell 515 0 be      -114
+cell 516 0 outside  115
+
+/**********************************
+*            Materials            *
+**********************************/
+
+mat uco      -10.5        tmp 900 moder grph 6000 rgb 255 255   0 burn 1
+92235.09c    0.06734
+92238.09c    0.26598
+ 8016.09c    0.5
+ 6000.09c    0.16666
+
+mat buffer   -1.0         tmp 900 moder grph 6000 rgb 255 128   0
+ 6000.09c    -1.0
+
+mat pyc      -1.9         tmp 900 moder grph 6000 rgb 255   0   0
+ 6000.09c    -1.0
+
+mat sic      -3.2         tmp 900 moder grph 6000 rgb 153  76   0
+14028.09c    -0.64326
+14029.09c    -0.03396
+14030.09c    -0.02317
+ 6000.09c    -0.2996
+
+mat zrh      -5.624       tmp 900                 rgb 160 160 160
+1001.09c     0.6
+40090.09c    0.212
+40091.09c    0.046
+40092.09c    0.071
+40094.09c    0.071
+
+mat be      -1.8          tmp 900                 rgb 160 160 160
+ 4009.09c    1.0
+
+% --- Thermal scattering data for graphite:
+therm grph 900 gr05.32t gr06.32t % 900K
+
+% --- Cross section data library file path:
+set acelib "/projects/sciteam/bbcc/serpent/xsdata/jeff312/sss_jeff312.xsdata"
+
+/******************************
+*            Input            *
+******************************/
+
+% --- Vacuum boundary condition:
+set bc 1
+
+% --- Geometry plot:
+plot 3 1000 1000 0.5
+plot 1 1000 1000 0.5
+
+% --- Neutron population and criticality cycles:
+set pop 200000 240 60
+set power 100000 % 100kW
+
+dep daytot 1825 3650
+set mcvol 10000000
+
+set inventory
+ 922350
+ 922380
+
+set pcc leli 10 10
+
+set declib "/projects/sciteam/bbcc/serpent/xsdata/jeff312/sss_jeff33.dec"
+set nfylib "/projects/sciteam/bbcc/serpent/xsdata/jeff312/sss_jeff33.nfy"
